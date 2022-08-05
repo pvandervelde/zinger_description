@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>cratebot_description</name>
-  <version>0.0.0</version>
+  <version>0.1.0</version>
   <description>The cratebot_description package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="petrik@todo.todo">petrik</maintainer>
-
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
