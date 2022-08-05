@@ -1,11 +1,9 @@
 <?xml version="1.0" ?>
 <robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <!--
     <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
     <xacro:include filename="$(find cratebot_description)/urdf/transmittions.xacro" />
     <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
-    -->
 
     <!--
       An empty base link for the following reasons:
@@ -56,7 +54,7 @@
             <geometry>
                 <box size="0.35, 0.2, 0.06" />
             </geometry>
-            <!-- <material name="silver"/> -->
+            <material name="silver"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0.07"/>
@@ -83,12 +81,26 @@
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
             </geometry>
         </collision>
     </link>
@@ -106,7 +118,7 @@
             <geometry>
                 <cylinder length="0.05" radius="0.04" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -133,12 +145,26 @@
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
             </geometry>
         </collision>
     </link>
@@ -156,7 +182,7 @@
             <geometry>
                 <cylinder length="0.05" radius="0.04" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -184,12 +210,26 @@
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
             </geometry>
         </collision>
     </link>
@@ -207,7 +247,7 @@
             <geometry>
                 <cylinder length="0.05" radius="0.04" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -233,12 +273,26 @@
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
                 <cylinder length="0.01" radius="0.05" />
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
+            <geometry>
+                <box size="0.04, 0.01, 0.06" />
             </geometry>
         </collision>
     </link>
@@ -256,7 +310,7 @@
             <geometry>
                 <cylinder length="0.05" radius="0.04" />
             </geometry>
-            <!-- <material name="black"/> -->
+            <material name="black"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -265,5 +319,4 @@
             </geometry>
         </collision>
     </link>
-
 </robot>
