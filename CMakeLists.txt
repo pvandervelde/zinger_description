@@ -18,7 +18,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(urdf REQUIRED)
-find_package(irobot_create_description REQUIRED)
 
 install(
   DIRECTORY launch meshes urdf
