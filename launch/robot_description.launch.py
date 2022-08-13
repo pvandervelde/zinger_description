@@ -2,6 +2,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch_ros.descriptions import ParameterValue
 from launch.substitutions import Command, PathJoinSubstitution
 from launch.substitutions.launch_configuration import LaunchConfiguration
 
@@ -28,7 +29,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
-            {'robot_description': Command(['xacro', ' ', xacro_file, ' ', 'gazebo:=ignition'])},
+            {'robot_description': ParameterValue(Command(['xacro', ' ', xacro_file, ' ', 'gazebo:=ignition']), value_type=str)},
         ],
     )
 
