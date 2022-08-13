@@ -10,8 +10,8 @@
       - When running a simulation the base link is not allowed to have inertia, but the chassis does need to have
         its inertia defined. So the fix is to define a 'dummy' base link.
     -->
-    <link name="base_link">
-    </link>
+    <!-- <link name="base_link">
+    </link> -->
 
     <!--
         A box that pretends to be the ground. Used for testing that the scuttle model has been assembled correctly.
@@ -33,24 +33,24 @@
         is exactly in the c.o.g of the chassis, because ROS considers the joint frame to be the same
         as the child frame.
     -->
+    <!--
     <joint name="chassis_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
         <parent link="base_link"/>
         <child link="chassis_link"/>
     </joint>
+    -->
 
     <!--
       The coordinate framework has the X-asis in the direction of forward motion, with the y-axis pointing
       to the left. This is equivalent to the coordinate system defined by the kinematics guide.
     -->
     <link name="chassis_link">
-        <!--
         <inertial>
-            <origin rpy="0 0 0" xyz="2.12433370053547e-05 -0.07877992189559235 0.07392564365565002"/>
-            <mass value="3.288323846275119"/>
-            <inertia ixx="0.038876" ixy="1.3e-05" ixz="1e-06" iyy="0.047513" iyz="0.000486" izz="0.084083"/>
+            <origin rpy="0 0 0" xyz="0 0 0.07"/>
+            <mass value="1.0"/>
+            <inertia ixx="0.00363" ixy="0" ixz="0" iyy="0.0105" iyz="0" izz="0.0135"/>
         </inertial>
-        -->
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0.07"/>
             <geometry>
@@ -78,6 +78,12 @@
     </joint>
 
     <link name="left_front_wheel_swivel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -115,6 +121,12 @@
     </joint>
 
     <link name="left_front_wheel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -142,6 +154,11 @@
     </joint>
 
     <link name="right_front_wheel_swivel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -179,6 +196,12 @@
     </joint>
 
     <link name="right_front_wheel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -207,6 +230,12 @@
     </joint>
 
     <link name="left_rear_wheel_swivel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -244,6 +273,12 @@
     </joint>
 
     <link name="left_rear_wheel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -270,6 +305,12 @@
     </joint>
 
     <link name="right_rear_wheel_swivel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -307,6 +348,12 @@
     </joint>
 
     <link name="right_rear_wheel_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.2"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+        </inertial>
+
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
