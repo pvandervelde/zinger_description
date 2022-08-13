@@ -29,7 +29,7 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': LaunchConfiguration('use_sim_time')},
-            {'robot_description': ParameterValue(Command(['xacro', ' ', xacro_file, ' ', 'gazebo:=ignition']), value_type=str)},
+            {'robot_description': ParameterValue(Command(['xacro', ' ', xacro_file]), value_type=str)}
         ],
     )
 
