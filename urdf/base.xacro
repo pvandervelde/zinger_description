@@ -52,14 +52,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0.07"/>
             <geometry>
-                <box size="0.35, 0.2, 0.06" />
+                <box size="0.35 0.2 0.06" />
             </geometry>
             <material name="silver"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0.07"/>
             <geometry>
-                <box size="0.35, 0.2, 0.06" />
+                <box size="0.35 0.2 0.06" />
             </geometry>
         </collision>
     </link>
@@ -93,14 +93,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
         </collision>
     </link>
@@ -157,14 +157,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
         </collision>
     </link>
@@ -222,14 +222,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
         </collision>
     </link>
@@ -285,14 +285,14 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
             <geometry>
-                <box size="0.04, 0.01, 0.06" />
+                <box size="0.04 0.01 0.06" />
             </geometry>
         </collision>
     </link>
