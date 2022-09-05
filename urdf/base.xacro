@@ -2,16 +2,65 @@
 <robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
-    <xacro:include filename="$(find cratebot_description)/urdf/transmittions.xacro" />
+    <xacro:include filename="$(find cratebot_description)/urdf/macros.xacro" />
     <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
 
+    <!-- CONSTANTS -->
+    <!-- Math -->
+    <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <!-- -->
+    <xacro:arg name="is_simulation" default="true" />
+
+    <!-- Chassis dimensions -->
+    <xacro:property name="chassis_mass" value="1.0" /> <!-- arbitrary value for base mass -->
+    <xacro:property name="chassis_length" value="0.35" />
+    <xacro:property name="chassis_width" value="0.2" />
+    <xacro:property name="chassis_height" value="0.06" />
+
+    <!-- Suspension dimensions -->
+    <xacro:property name="wheel_offset" value="0.1" />
+    <xacro:property name="steering_radius" value="0.05" />
+    <xacro:property name="steering_thickness" value="0.01" />
+
+    <!-- Wheel dimensions -->
+    <xacro:property name="wheel_mass" value="0.2" />
+    <xacro:property name="wheel_radius" value="0.04" />
+    <xacro:property name="wheel_width" value="0.05" />
+
+    <!-- -->
+    <xacro:property name="front_x_reflect" value="1" />
+    <xacro:property name="rear_x_reflect" value="-1" />
+
+    <xacro:property name="left_y_reflect" value="-1" />
+    <xacro:property name="right_y_reflect" value="1" />
+
+    <!-- MACROS -->
+
+
+    <!-- MODEL -->
+
     <!--
-      An empty base link for the following reasons:
-      - When running a simulation the base link is not allowed to have inertia, but the chassis does need to have
-        its inertia defined. So the fix is to define a 'dummy' base link.
+      An empty base link that describes the origin of the robot at the c.o.g of the chassis
     -->
-    <!-- <link name="base_link">
-    </link> -->
+    <link name="base_link">
+    </link>
+
+    <!--
+      An empty base footprint that describes the origin of the robot on the ground
+    -->
+    <!--
+        Define the connection between base_link and base_footprint. Relative to base_link the joint
+        is exactly on the ground plane, because ROS considers the joint frame to be the same
+        as the child frame.
+    -->
+    <joint name="joint_base_to_footprint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 -${wheel_radius + 0.5 * chassis_height}"/>
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+    </joint>
+    <link name="base_footprint">
+    </link>
 
     <!--
         A box that pretends to be the ground. Used for testing that the scuttle model has been assembled correctly.
@@ -33,13 +82,11 @@
         is exactly in the c.o.g of the chassis, because ROS considers the joint frame to be the same
         as the child frame.
     -->
-    <!--
     <joint name="chassis_joint" type="fixed">
         <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
         <parent link="base_link"/>
         <child link="chassis_link"/>
     </joint>
-    -->
 
     <!--
       The coordinate framework has the X-asis in the direction of forward motion, with the y-axis pointing
@@ -47,21 +94,27 @@
     -->
     <link name="chassis_link">
         <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0.07"/>
-            <mass value="1.0"/>
-            <inertia ixx="0.00363" ixy="0" ixz="0" iyy="0.0105" iyz="0" izz="0.0135"/>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
+            <mass value="${chassis_mass}"/>
+            <inertia
+                ixx="${chassis_mass / 12.0 * (chassis_width * chassis_width + chassis_height * chassis_height)}"
+                ixy="0"
+                ixz="0"
+                iyy="${chassis_mass / 12.0 * (chassis_length * chassis_length + chassis_height * chassis_height)}"
+                iyz="0"
+                izz="${chassis_mass / 12.0 * (chassis_length * chassis_length + chassis_width * chassis_width)}"/>
         </inertial>
         <visual>
-            <origin rpy="0 0 0" xyz="0 0 0.07"/>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
             <geometry>
-                <box size="0.35 0.2 0.06" />
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
             </geometry>
             <material name="silver"/>
         </visual>
         <collision>
-            <origin rpy="0 0 0" xyz="0 0 0.07"/>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
             <geometry>
-                <box size="0.35 0.2 0.06" />
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
             </geometry>
         </collision>
     </link>
@@ -69,303 +122,72 @@
     <!--
         Left front wheel assembly
     -->
-
-    <joint name="left_front_wheel_chassis_to_swivel_joint" type="continuous">
-        <origin rpy="0 0 0" xyz="0.125 0.155 0.095"/>
-        <parent link="chassis_link"/>
-        <child link="left_front_wheel_swivel_link"/>
-        <axis xyz="0.0 0.0 1.0"/>
-    </joint>
-
-    <link name="left_front_wheel_swivel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-        </collision>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="left_front_wheel_swivel_to_wheel_joint" type="continuous">
-        <origin rpy="1.570796 0 0" xyz="0 0 -0.055"/>
-        <parent link="left_front_wheel_swivel_link"/>
-        <child link="left_front_wheel_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
-    </joint>
-
-    <link name="left_front_wheel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-            <material name="black"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-        </collision>
-    </link>
+    <xacro:drive_module_assembly
+        name="left_front"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${front_x_reflect}"
+        y_reflect="${left_y_reflect}"
+        is_simulation="${is_simulation}" />
 
     <!--
         Right front wheel assembly
     -->
-
-    <joint name="right_front_wheel_chassis_to_swivel_joint" type="continuous">
-        <origin rpy="0 0 0" xyz="0.125 -0.155 0.095"/>
-        <parent link="chassis_link"/>
-        <child link="right_front_wheel_swivel_link"/>
-        <axis xyz="0.0 0.0 1.0"/>
-    </joint>
-
-    <link name="right_front_wheel_swivel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-        </collision>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="right_front_wheel_swivel_to_wheel_joint" type="continuous">
-        <origin rpy="1.570796 0 0" xyz="0 0 -0.055"/>
-        <parent link="right_front_wheel_swivel_link"/>
-        <child link="right_front_wheel_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
-    </joint>
-
-    <link name="right_front_wheel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-            <material name="black"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-        </collision>
-    </link>
-
+    <xacro:drive_module_assembly
+        name="right_front"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${front_x_reflect}"
+        y_reflect="${right_y_reflect}"
+        is_simulation="${is_simulation}" />
 
     <!--
         Left rear wheel assembly
     -->
-
-    <joint name="left_rear_wheel_chassis_to_swivel_joint" type="continuous">
-        <origin rpy="0 0 0" xyz="-0.125 0.155 0.095"/>
-        <parent link="chassis_link"/>
-        <child link="left_rear_wheel_swivel_link"/>
-        <axis xyz="0.0 0.0 1.0"/>
-    </joint>
-
-    <link name="left_rear_wheel_swivel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-        </collision>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 -0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="left_rear_wheel_swivel_to_wheel_joint" type="continuous">
-        <origin rpy="1.570796 0 0" xyz="0 0 -0.055"/>
-        <parent link="left_rear_wheel_swivel_link"/>
-        <child link="left_rear_wheel_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
-    </joint>
-
-    <link name="left_rear_wheel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-            <material name="black"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-        </collision>
-    </link>
+    <xacro:drive_module_assembly
+        name="left_rear"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${rear_x_reflect}"
+        y_reflect="${left_y_reflect}"
+        is_simulation="${is_simulation}" />
 
     <!--
         Right rear wheel assembly
     -->
-    <joint name="right_rear_wheel_chassis_to_swivel_joint" type="continuous">
-        <origin rpy="0 0 0" xyz="-0.125 -0.155 0.095"/>
-        <parent link="chassis_link"/>
-        <child link="right_rear_wheel_swivel_link"/>
-        <axis xyz="0.0 0.0 1.0"/>
-    </joint>
-
-    <link name="right_rear_wheel_swivel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.01" radius="0.05" />
-            </geometry>
-        </collision>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-            <material name="blue"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0.04 -0.035"/>
-            <geometry>
-                <box size="0.04 0.01 0.06" />
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="right_rear_wheel_swivel_to_wheel_joint" type="continuous">
-        <origin rpy="1.570796 0 0" xyz="0 0 -0.055"/>
-        <parent link="right_rear_wheel_swivel_link"/>
-        <child link="right_rear_wheel_link"/>
-        <axis xyz="0.0 1.0 0.0"/>
-    </joint>
-
-    <link name="right_rear_wheel_link">
-        <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <mass value="0.2"/>
-            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
-        </inertial>
-
-        <visual>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-            <material name="black"/>
-        </visual>
-        <collision>
-            <origin rpy="0 0 0" xyz="0 0 0"/>
-            <geometry>
-                <cylinder length="0.05" radius="0.04" />
-            </geometry>
-        </collision>
-    </link>
+    <xacro:drive_module_assembly
+        name="right_rear"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${rear_x_reflect}"
+        y_reflect="${right_y_reflect}"
+        is_simulation="${is_simulation}" />
 </robot>
