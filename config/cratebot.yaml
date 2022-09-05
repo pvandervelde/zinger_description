@@ -1,0 +1,41 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    imu_sensor_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - joint_chassis_to_steering_left_front
+      - joint_chassis_to_steering_right_front
+      - joint_chassis_to_steering_left_rear
+      - joint_chassis_to_steering_right_rear
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+velocity_controller:
+  ros__parameters:
+    joints:
+      - joint_steering_to_wheel_left_front
+      - joint_steering_to_wheel_right_front
+      - joint_steering_to_wheel_left_rear
+      - joint_steering_to_wheel_right_rear
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
