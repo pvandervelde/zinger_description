@@ -156,7 +156,7 @@
         offset="${wheel_offset}"
         x_reflect="${front_x_reflect}"
         y_reflect="${right_y_reflect}"
-        is_simulation="$$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)" />
 
     <!--
         Left rear wheel assembly
@@ -175,7 +175,7 @@
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
         y_reflect="${left_y_reflect}"
-        is_simulation="$$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)" />
 
     <!--
         Right rear wheel assembly
@@ -194,5 +194,5 @@
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
         y_reflect="${right_y_reflect}"
-        is_simulation="$$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)" />
 </robot>
