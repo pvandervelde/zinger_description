@@ -126,9 +126,10 @@
         - x_reflect: Direction multiplier for X offsets. Either 1 or -1
         - y_reflect: Direction multiplier for Y offsets. Either 1 or -1
     -->
-    <xacro:macro name="drive_module_assembly" params="name chassis_length chassis_width chassis_height wheel_mass wheel_radius wheel_width steering_radius steering_thickness offset x_reflect y_reflect is_simulation">
+    <xacro:macro name="drive_module_assembly" params="name chassis_length chassis_width chassis_height wheel_mass wheel_radius wheel_width steering_mass steering_radius steering_thickness offset x_reflect y_reflect is_simulation">
         <xacro:steering_assembly
             name="${name}"
+            mass="${steering_mass}"
             chassis_length="${chassis_length}"
             chassis_width="${chassis_width}"
             chassis_height="${chassis_height}"

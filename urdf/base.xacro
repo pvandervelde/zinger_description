@@ -20,6 +20,7 @@
 
     <!-- Suspension dimensions -->
     <xacro:property name="wheel_offset" value="0.1" />
+    <xacro:property name="steering_mass" value="0.2" />
     <xacro:property name="steering_radius" value="0.05" />
     <xacro:property name="steering_thickness" value="0.01" />
 
@@ -130,6 +131,7 @@
         wheel_mass="${wheel_mass}"
         wheel_radius="${wheel_radius}"
         wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
         steering_radius="${steering_radius}"
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
@@ -148,6 +150,7 @@
         wheel_mass="${wheel_mass}"
         wheel_radius="${wheel_radius}"
         wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
         steering_radius="${steering_radius}"
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
@@ -166,6 +169,7 @@
         wheel_mass="${wheel_mass}"
         wheel_radius="${wheel_radius}"
         wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
         steering_radius="${steering_radius}"
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
@@ -184,6 +188,7 @@
         wheel_mass="${wheel_mass}"
         wheel_radius="${wheel_radius}"
         wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
         steering_radius="${steering_radius}"
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
