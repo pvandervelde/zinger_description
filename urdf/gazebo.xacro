@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
     <gazebo>
-        <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control">
+        <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <robot_param>robot_description</robot_param>
             <robot_param_node>robot_state_publisher</robot_param_node>
             <parameters>$(find cratebot_description)/config/cratebot.yaml</parameters>
