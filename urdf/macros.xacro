@@ -63,7 +63,7 @@
     -->
     <xacro:macro name="steering_assembly" params="name mass chassis_length chassis_width chassis_height steering_radius thickness wheel_radius offset x_reflect y_reflect">
         <joint name="joint_chassis_to_steering_${name}" type="continuous">
-            <origin rpy="0 0 0" xyz="${x_reflect * (0.5 * chassis_length - steering_radius)} ${y_reflect * (chassis_width + steering_radius)} ${chassis_height + wheel_radius - 0.5 * thickness}"/>
+            <origin rpy="0 0 0" xyz="${x_reflect * (0.5 * chassis_length - steering_radius)} ${y_reflect * (0.5 * chassis_width + steering_radius)} ${0.5 * chassis_height - 0.5 * thickness}"/>
             <parent link="chassis_link"/>
             <child link="link_steering_${name}"/>
             <axis xyz="0.0 0.0 1.0"/>
