@@ -39,7 +39,7 @@
     <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
     <xacro:include filename="$(find cratebot_description)/urdf/macros.xacro" />
 
-    <xacro:if value="${is_simulation}">
+    <xacro:if value="$(arg is_simulation)">
     <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
     </xacro:if>
 
