@@ -12,14 +12,29 @@ from launch_ros.substitutions import FindPackageShare
 
 
 ARGUMENTS = [
-    DeclareLaunchArgument('use_sim_time', default_value='false',
-                          choices=['true', 'false'],
-                          description='use_sim_time')
+    DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='false',
+        choices=['true', 'false'],
+        description='use_sim_time'
+    ),
+    DeclareLaunchArgument(
+        "use_fake_hardware",
+        default_value="true",
+        description="Start robot with fake hardware mirroring command to its states.",
+    ),
+    DeclareLaunchArgument(
+        "fake_sensor_commands",
+        default_value="false",
+        description="Enable fake command interfaces for sensors used for simple simulations. Used only if 'use_fake_hardware' parameter is true.",
+    ),
 ]
 
 
 def generate_launch_description():
     is_simulation = LaunchConfiguration("use_sim_time")
+    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
 
     robot_description_content = Command(
         [
@@ -29,6 +44,12 @@ def generate_launch_description():
             " ",
             "is_simulation:=",
             is_simulation,
+             " ",
+            "use_fake_hardware:=",
+            use_fake_hardware,
+            " ",
+            "fake_sensor_commands:=",
+            fake_sensor_commands,
         ]
     )
     robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}

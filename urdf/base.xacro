@@ -1,16 +1,14 @@
 <?xml version="1.0" ?>
 <robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
-    <xacro:include filename="$(find cratebot_description)/urdf/macros.xacro" />
-    <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
-
     <!-- CONSTANTS -->
     <!-- Math -->
     <xacro:property name="PI" value="3.1415926535897931"/>
 
-    <!-- -->
+    <!-- ARGUMENTS -->
     <xacro:arg name="is_simulation" default="true" />
+    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="fake_sensor_commands" default="false" />
 
     <!-- Chassis dimensions -->
     <xacro:property name="chassis_mass" value="1.0" /> <!-- arbitrary value for base mass -->
@@ -36,8 +34,14 @@
     <xacro:property name="left_y_reflect" value="-1" />
     <xacro:property name="right_y_reflect" value="1" />
 
-    <!-- MACROS -->
+    <!-- INCLUDES -->
 
+    <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
+    <xacro:include filename="$(find cratebot_description)/urdf/macros.xacro" />
+
+    <xacro:if value="${is_simulation}">
+    <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
+    </xacro:if>
 
     <!-- MODEL -->
 
@@ -142,7 +146,8 @@
         offset="${wheel_offset}"
         x_reflect="${front_x_reflect}"
         y_reflect="${left_y_reflect}"
-        is_simulation="$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)"
+        use_fake_hardware="$(arg use_fake_hardware)" />
 
     <!--
         Right front wheel assembly
@@ -161,7 +166,8 @@
         offset="${wheel_offset}"
         x_reflect="${front_x_reflect}"
         y_reflect="${right_y_reflect}"
-        is_simulation="$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)"
+        use_fake_hardware="$(arg use_fake_hardware)" />
 
     <!--
         Left rear wheel assembly
@@ -180,7 +186,8 @@
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
         y_reflect="${left_y_reflect}"
-        is_simulation="$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)"
+        use_fake_hardware="$(arg use_fake_hardware)" />
 
     <!--
         Right rear wheel assembly
@@ -199,5 +206,6 @@
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
         y_reflect="${right_y_reflect}"
-        is_simulation="$(arg is_simulation)" />
+        is_simulation="$(arg is_simulation)"
+        use_fake_hardware="$(arg use_fake_hardware)" />
 </robot>
