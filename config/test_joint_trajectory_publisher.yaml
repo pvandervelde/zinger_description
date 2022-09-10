@@ -1,0 +1,11 @@
+publisher_joint_trajectory_controller:
+  ros__parameters:
+
+    controller_name: "position_trajectory_controller"
+    wait_sec_between_publish: 6
+
+    goal_names: ["pos1", "pos2", "pos3", "pos4"]
+    pos1: [1.0, 1.0, 1.0, 1.0]
+    pos2: [0, 0, 0, 0]
+    pos3: [-1.0, -1.0, -1.0, -1.0]
+    pos4: [0, 0, 0, 0]
