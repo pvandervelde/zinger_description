@@ -6,6 +6,6 @@ publisher_joint_trajectory_controller:
 
     goal_names: ["pos1", "pos2", "pos3", "pos4"]
     pos1: [1.0, 1.0, 1.0, 1.0]
-    pos2: [0, 0, 0, 0]
+    pos2: [0.0, 0.0, 0.0, 0.0]
     pos3: [-1.0, -1.0, -1.0, -1.0]
-    pos4: [0, 0, 0, 0]
+    pos4: [0.0, 0.0, 0.0, 0.0]
