@@ -9,3 +9,14 @@ publisher_joint_trajectory_controller:
     pos2: [0.0, 0.0, 0.0, 0.0]
     pos3: [-1.0, -1.0, -1.0, -1.0]
     pos4: [0.0, 0.0, 0.0, 0.0]
+
+    joints:
+      - joint_chassis_to_steering_left_front
+      - joint_chassis_to_steering_right_front
+      - joint_chassis_to_steering_left_rear
+      - joint_chassis_to_steering_right_rear
+
+    check_starting_point: false
+    starting_point_limits:
+      joint1: [-0.1,0.1]
+      joint2: [-0.1,0.1]
