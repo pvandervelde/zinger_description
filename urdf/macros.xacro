@@ -126,7 +126,7 @@
         - x_reflect: Direction multiplier for X offsets. Either 1 or -1
         - y_reflect: Direction multiplier for Y offsets. Either 1 or -1
     -->
-    <xacro:macro name="drive_module_assembly" params="name chassis_length chassis_width chassis_height wheel_mass wheel_radius wheel_width steering_mass steering_radius steering_thickness offset x_reflect y_reflect is_simulation use_fake_hardware">
+    <xacro:macro name="drive_module_assembly" params="name chassis_length chassis_width chassis_height wheel_mass wheel_radius wheel_width steering_mass steering_radius steering_thickness offset x_reflect y_reflect">
         <xacro:steering_assembly
             name="${name}"
             mass="${steering_mass}"
@@ -145,49 +145,29 @@
             radius="${wheel_radius}"
             width="${wheel_width}"
             offset="${offset}"/>
-        <xacro:steering_module_controller
-            name="${name}"
-            is_simulation="${is_simulation}"
-            use_fake_hardware="${use_fake_hardware}" />
     </xacro:macro>
 
 
     <!-- CONTROLLERS -->
-    <xacro:macro name="steering_module_controller" params="name is_simulation:=^|true use_fake_hardware:=^|false">
-        <ros2_control name="control_steering_${name}" type="system">
-            <hardware>
-                <xacro:if value="${is_simulation}">
-                    <plugin>ign_ros2_control/IgnitionSystem</plugin>
-                    <param name="example_param_read_for_sec">0.43</param>
-                </xacro:if>
-                <xacro:unless value="${is_simulation}">
-                    <xacro:if value="${use_fake_hardware}">
-                        <plugin>mock_components/GenericSystem</plugin>
-                    </xacro:if>
-                    <xacro:unless value="${use_fake_hardware}">
-                        <!-- USE REAL HARDWARE HERE -->
-                    </xacro:unless>
-                </xacro:unless>
-            </hardware>
-            <joint name="joint_chassis_to_steering_${name}">
-                <command_interface name="position">
-                    <param name="min">-1</param>
-                    <param name="max">1</param>
-                </command_interface>
-                <state_interface name="position"/>
-                <state_interface name="velocity"/>
-                <state_interface name="effort"/>
-            </joint>
-            <joint name="joint_steering_to_wheel_${name}">
-                <command_interface name="velocity">
-                    <param name="min">-1</param>
-                    <param name="max">1</param>
-                </command_interface>
-                <state_interface name="position"/>
-                <state_interface name="velocity"/>
-                <state_interface name="effort"/>
-            </joint>
-        </ros2_control>
+    <xacro:macro name="steering_module_controller" params="name">
+        <joint name="joint_chassis_to_steering_${name}">
+            <command_interface name="position">
+                <param name="min">-1</param>
+                <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_steering_to_wheel_${name}">
+            <command_interface name="velocity">
+                <param name="min">-1</param>
+                <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
     </xacro:macro>
 
 </robot>

@@ -9,6 +9,7 @@
     <xacro:arg name="is_simulation" default="true" />
     <xacro:arg name="use_fake_hardware" default="true" />
     <xacro:arg name="fake_sensor_commands" default="false" />
+    <xacro:arg name="chassis_version" default="v1" />
 
     <!-- Chassis dimensions -->
     <xacro:property name="chassis_mass" value="1.0" /> <!-- arbitrary value for base mass -->
@@ -145,9 +146,7 @@
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
         x_reflect="${front_x_reflect}"
-        y_reflect="${left_y_reflect}"
-        is_simulation="$(arg is_simulation)"
-        use_fake_hardware="$(arg use_fake_hardware)" />
+        y_reflect="${left_y_reflect}" />
 
     <!--
         Right front wheel assembly
@@ -165,9 +164,7 @@
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
         x_reflect="${front_x_reflect}"
-        y_reflect="${right_y_reflect}"
-        is_simulation="$(arg is_simulation)"
-        use_fake_hardware="$(arg use_fake_hardware)" />
+        y_reflect="${right_y_reflect}" />
 
     <!--
         Left rear wheel assembly
@@ -185,9 +182,7 @@
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
-        y_reflect="${left_y_reflect}"
-        is_simulation="$(arg is_simulation)"
-        use_fake_hardware="$(arg use_fake_hardware)" />
+        y_reflect="${left_y_reflect}" />
 
     <!--
         Right rear wheel assembly
@@ -205,7 +200,30 @@
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
-        y_reflect="${right_y_reflect}"
-        is_simulation="$(arg is_simulation)"
-        use_fake_hardware="$(arg use_fake_hardware)" />
+        y_reflect="${right_y_reflect}" />
+
+    <ros2_control name="CratebotJointControl" type="system">
+        <xacro:if value="${is_simulation}">
+            <hardware>
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                <param name="example_param_read_for_sec">0.43</param>
+            </hardware>
+        </xacro:if>
+        <xacro:unless value="${is_simulation}">
+            <xacro:if value="${use_fake_hardware}">
+                <hardware>
+                    <plugin>mock_components/GenericSystem</plugin>
+                </hardware>
+            </xacro:if>
+            <xacro:unless value="${use_fake_hardware}">
+                <!-- USE REAL HARDWARE HERE -->
+                <hardware>
+                </hardware>
+            </xacro:unless>
+        </xacro:unless>
+        <xacro:steering_module_controller name="left_front" />
+        <xacro:steering_module_controller name="right_front" />
+        <xacro:steering_module_controller name="left_rear" />
+        <xacro:steering_module_controller name="right_rear" />
+    </ros2_control>
 </robot>
