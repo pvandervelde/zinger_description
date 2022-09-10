@@ -80,29 +80,36 @@ def generate_launch_description():
         ],
     )
 
-    joint_state_broadcaster_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-    )
+    if is_simulation == 'true' or use_fake_hardware == 'true':
+        joint_state_broadcaster_node = Node(
+            package="joint_state_broadcaster_gui",
+            executable="joint_state_broadcaster_gui",
+        )
+    else:
 
-    robot_controller_spawner = Node(
+        joint_state_broadcaster_node = Node(
+            package="controller_manager",
+            executable="spawner",
+            arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        )
+
+    postion_trajectory_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[robot_controllers, "-c", "/controller_manager"],
+        arguments=["position_trajectory_controller", "-c", "/controller_manager"],
     )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_spawner,
-            on_exit=[robot_controller_spawner],
+            target_action=joint_state_broadcaster_node,
+            on_exit=[postion_trajectory_controller_spawner],
         )
     )
 
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(control_node)
     ld.add_action(robot_state_publisher)
-    ld.add_action(joint_state_broadcaster_spawner)
+    ld.add_action(joint_state_broadcaster_node)
     ld.add_action(delay_robot_controller_spawner_after_joint_state_broadcaster_spawner)
     return ld
