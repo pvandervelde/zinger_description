@@ -9,3 +9,9 @@ publisher_velocity_controller:
     velocity2: [0.0, 0.0, 0.0, 0.0, 0.0]
     velocity3: [-1.0, -1.0, -1.0, -1.0]
     velocity4: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+    joints:
+      - joint_steering_to_wheel_left_front
+      - joint_steering_to_wheel_right_front
+      - joint_steering_to_wheel_left_rear
+      - joint_steering_to_wheel_right_rear
