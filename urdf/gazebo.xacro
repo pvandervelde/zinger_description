@@ -1,5 +1,34 @@
 <?xml version="1.0" ?>
 <robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <!--
+        GAZEBO MACROS
+    -->
+    <!--
+        Define Gazebo specific macro's here because this file isn't included if we're not running
+        Gazebo
+    -->
+    <xacro:macro name="gazebo_reference_link_wheel" params="name">
+        <gazebo reference="link_wheel_${name}">
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
+            <kp>500000.0</kp>
+            <kd>10.0</kd>
+            <minDepth>0.001</minDepth>
+            <maxVel>0.1</maxVel>
+            <fdir1>1 0 0</fdir1>
+            <selfCollide>true</selfCollide>
+        </gazebo>
+    </xacro:macro>
+
+    <!--
+        GAZEBO
+    -->
+    <xacro:gazebo_reference_link_wheel name="left_front" />
+    <xacro:gazebo_reference_link_wheel name="right_front" />
+    <xacro:gazebo_reference_link_wheel name="left_rear" />
+    <xacro:gazebo_reference_link_wheel name="right_rear" />
+
     <gazebo>
         <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <robot_param>robot_description</robot_param>
