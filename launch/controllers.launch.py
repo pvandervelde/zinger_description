@@ -36,6 +36,58 @@ def generate_launch_description():
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
 
+    ld = LaunchDescription(ARGUMENTS)
+
+    # When running in Ignition / Gazebo it runs a different controller manager so we don't need this one?
+    if is_simulation != 'true':
+        add_controller_manager(
+            is_simulation=is_simulation,
+            use_fake_hardware=use_fake_hardware,
+            fake_sensor_commands=fake_sensor_commands,
+            ld=ld)
+
+    joint_state_broadcaster_node = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    )
+    ld.add_action(joint_state_broadcaster_node)
+
+    postion_trajectory_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["position_trajectory_controller", "-c", "/controller_manager"],
+    )
+
+    # Delay creating the position trajectory controller until the joint_state_broadcast node has been started so that
+    # the position trajectory controller can get the different TF frames from the broadcaster
+    delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_node,
+            on_exit=[postion_trajectory_controller_spawner],
+        )
+    )
+    ld.add_action(delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner)
+
+    velocity_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["velocity_controller", "-c", "/controller_manager"],
+    )
+
+    # Delay creating the velocity controller until the joint_state_broadcast node has been started so that
+    # the velocity controller can get the different TF frames from the broadcaster
+    delay_velocity_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_node,
+            on_exit=[velocity_controller_spawner],
+        )
+    )
+    ld.add_action(delay_velocity_controller_spawner_after_joint_state_broadcaster_spawner)
+
+    return ld
+
+def add_controller_manager(is_simulation: str, use_fake_hardware: str, fake_sensor_commands: str, ld: LaunchDescription):
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -69,45 +121,4 @@ def generate_launch_description():
         output="both",
     )
 
-    joint_state_broadcaster_node = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
-    )
-
-    postion_trajectory_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["position_trajectory_controller", "-c", "/controller_manager"],
-    )
-
-    # Delay creating the position trajectory controller until the joint_state_broadcast node has been started so that
-    # the position trajectory controller can get the different TF frames from the broadcaster
-    delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_node,
-            on_exit=[postion_trajectory_controller_spawner],
-        )
-    )
-
-    velocity_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["velocity_controller", "-c", "/controller_manager"],
-    )
-
-    # Delay creating the velocity controller until the joint_state_broadcast node has been started so that
-    # the velocity controller can get the different TF frames from the broadcaster
-    delay_velocity_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster_node,
-            on_exit=[velocity_controller_spawner],
-        )
-    )
-
-    ld = LaunchDescription(ARGUMENTS)
     ld.add_action(control_node)
-    ld.add_action(joint_state_broadcaster_node)
-    ld.add_action(delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner)
-    ld.add_action(delay_velocity_controller_spawner_after_joint_state_broadcaster_spawner)
-    return ld
