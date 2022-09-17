@@ -206,7 +206,6 @@
         <xacro:if value="$(arg is_simulation)">
             <hardware>
                 <plugin>ign_ros2_control/IgnitionSystem</plugin>
-                <param name="example_param_read_for_sec">0.43</param>
             </hardware>
         </xacro:if>
         <xacro:unless value="$(arg is_simulation)">
