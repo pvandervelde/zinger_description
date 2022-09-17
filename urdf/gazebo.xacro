@@ -30,9 +30,7 @@
     <xacro:gazebo_reference_link_wheel name="right_rear" />
 
     <gazebo>
-        <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-            <robot_param>robot_description</robot_param>
-            <robot_param_node>robot_state_publisher</robot_param_node>
+        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <parameters>$(find cratebot_description)/config/cratebot.yaml</parameters>
         </plugin>
     </gazebo>
