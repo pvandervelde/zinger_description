@@ -1,7 +1,7 @@
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch_ros.descriptions import ParameterValue
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
@@ -46,17 +46,18 @@ def generate_launch_description():
             fake_sensor_commands=fake_sensor_commands,
             ld=ld)
 
-    joint_state_broadcaster_node = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+    joint_state_broadcaster_node = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'joint_state_broadcaster'],
+        output='screen'
     )
     ld.add_action(joint_state_broadcaster_node)
 
-    postion_trajectory_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["position_trajectory_controller", "-c", "/controller_manager"],
+
+    postion_trajectory_controller_spawner = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'position_trajectory_controller'],
+        output='screen'
     )
 
     # Delay creating the position trajectory controller until the joint_state_broadcast node has been started so that
@@ -69,10 +70,11 @@ def generate_launch_description():
     )
     ld.add_action(delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner)
 
-    velocity_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["velocity_controller", "-c", "/controller_manager"],
+
+    velocity_controller_spawner = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'velocity_controller'],
+        output='screen'
     )
 
     # Delay creating the velocity controller until the joint_state_broadcast node has been started so that
