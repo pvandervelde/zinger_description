@@ -37,7 +37,7 @@ def generate_launch_description():
         'cratebot_description')
 
     controller_manager_launch = PathJoinSubstitution(
-        [pkg_robot_description, 'launch', 'manager.controller.launch.py'])
+        [pkg_robot_description, 'launch', 'controller_manager.launch.py'])
 
     ld = LaunchDescription(ARGUMENTS)
 
