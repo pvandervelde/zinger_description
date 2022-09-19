@@ -1,14 +1,12 @@
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
+from launch.conditions import UnlessCondition
 from launch.event_handlers import OnProcessExit
-from launch_ros.descriptions import ParameterValue
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution
 from launch.substitutions.launch_configuration import LaunchConfiguration
-
-from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
 
 
 ARGUMENTS = [
@@ -30,21 +28,28 @@ ARGUMENTS = [
     ),
 ]
 
-
 def generate_launch_description():
     is_simulation = LaunchConfiguration("use_sim_time")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
 
+    pkg_robot_description = get_package_share_directory(
+        'cratebot_description')
+
+    controller_manager_launch = PathJoinSubstitution(
+        [pkg_robot_description, 'launch', 'manager.controller.launch.py'])
+
     ld = LaunchDescription(ARGUMENTS)
 
-    # When running in Ignition / Gazebo it runs a different controller manager so we don't need this one?
-    if is_simulation != 'true':
-        add_controller_manager(
-            is_simulation=is_simulation,
-            use_fake_hardware=use_fake_hardware,
-            fake_sensor_commands=fake_sensor_commands,
-            ld=ld)
+    controller_manager_launch_include = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([controller_manager_launch]),
+        launch_arguments=[
+            ('use_sim_time', is_simulation),
+            ('use_fake_hardware', use_fake_hardware),
+            ('fake_sensor_commands', fake_sensor_commands)],
+        condition=UnlessCondition(is_simulation)
+    )
+    ld.add_action(controller_manager_launch_include)
 
     joint_state_broadcaster_node = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
@@ -88,39 +93,3 @@ def generate_launch_description():
     ld.add_action(delay_velocity_controller_spawner_after_joint_state_broadcaster_spawner)
 
     return ld
-
-def add_controller_manager(is_simulation: str, use_fake_hardware: str, fake_sensor_commands: str, ld: LaunchDescription):
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution([get_package_share_directory('cratebot_description'), "urdf", 'base.xacro']),
-            " ",
-            "is_simulation:=",
-            is_simulation,
-             " ",
-            "use_fake_hardware:=",
-            use_fake_hardware,
-            " ",
-            "fake_sensor_commands:=",
-            fake_sensor_commands,
-        ]
-    )
-    robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
-
-    robot_controllers = PathJoinSubstitution(
-        [
-            get_package_share_directory('cratebot_description'),
-            "config",
-            'cratebot.yaml',
-        ]
-    )
-
-    control_node = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        parameters=[robot_description, robot_controllers],
-        output="both",
-    )
-
-    ld.add_action(control_node)
