@@ -47,7 +47,7 @@ def generate_launch_description():
             ld=ld)
 
     joint_state_broadcaster_node = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'configured',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'joint_state_broadcaster'],
         output='screen'
     )
@@ -55,7 +55,7 @@ def generate_launch_description():
 
 
     postion_trajectory_controller_spawner = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'configured',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'position_trajectory_controller'],
         output='screen'
     )
@@ -72,7 +72,7 @@ def generate_launch_description():
 
 
     velocity_controller_spawner = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'configured',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'velocity_controller'],
         output='screen'
     )
