@@ -1,0 +1,22 @@
+publisher_joint_trajectory_controller:
+  ros__parameters:
+
+    controller_name: "position_trajectory_controller"
+    wait_sec_between_publish: 6
+
+    goal_names: ["pos1", "pos2", "pos3", "pos4"]
+    pos1: [1.0, 1.0, 1.0, 1.0]
+    pos2: [0.0, 0.0, 0.0, 0.0]
+    pos3: [-1.0, -1.0, -1.0, -1.0]
+    pos4: [0.0, 0.0, 0.0, 0.0]
+
+    joints:
+      - joint_chassis_to_steering_left_front
+      - joint_chassis_to_steering_right_front
+      - joint_chassis_to_steering_left_rear
+      - joint_chassis_to_steering_right_rear
+
+    check_starting_point: false
+    starting_point_limits:
+      joint1: [-0.1, 0.1]
+      joint2: [-0.1, 0.1]

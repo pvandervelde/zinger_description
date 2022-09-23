@@ -1,0 +1,228 @@
+<?xml version="1.0" ?>
+<robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- CONSTANTS -->
+    <!-- Math -->
+    <xacro:property name="PI" value="3.1415926535897931"/>
+
+    <!-- ARGUMENTS -->
+    <xacro:arg name="is_simulation" default="true" />
+    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="fake_sensor_commands" default="false" />
+    <xacro:arg name="chassis_version" default="v1" />
+
+    <!-- Chassis dimensions -->
+    <xacro:property name="chassis_mass" value="1.0" /> <!-- arbitrary value for base mass -->
+    <xacro:property name="chassis_length" value="0.35" />
+    <xacro:property name="chassis_width" value="0.2" />
+    <xacro:property name="chassis_height" value="0.06" />
+
+    <!-- Suspension dimensions -->
+    <xacro:property name="wheel_offset" value="0.01" />
+    <xacro:property name="steering_mass" value="0.2" />
+    <xacro:property name="steering_radius" value="0.05" />
+    <xacro:property name="steering_thickness" value="0.01" />
+
+    <!-- Wheel dimensions -->
+    <xacro:property name="wheel_mass" value="0.2" />
+    <xacro:property name="wheel_radius" value="0.04" />
+    <xacro:property name="wheel_width" value="0.05" />
+
+    <!-- -->
+    <xacro:property name="front_x_reflect" value="1" />
+    <xacro:property name="rear_x_reflect" value="-1" />
+
+    <xacro:property name="left_y_reflect" value="-1" />
+    <xacro:property name="right_y_reflect" value="1" />
+
+    <!-- INCLUDES -->
+
+    <xacro:include filename="$(find cratebot_description)/urdf/materials.xacro" />
+    <xacro:include filename="$(find cratebot_description)/urdf/macros.xacro" />
+
+    <xacro:if value="$(arg is_simulation)">
+    <xacro:include filename="$(find cratebot_description)/urdf/gazebo.xacro" />
+    </xacro:if>
+
+    <!-- MODEL -->
+
+    <!--
+      An empty base footprint that describes the origin of the robot on the ground
+    -->
+    <link name="base_footprint">
+    </link>
+
+    <!--
+      An empty base link that describes the origin of the robot at the c.o.g of the chassis
+    -->
+    <!--
+        Define the connection between base_link and base_footprint. Relative to base_link the joint
+        is exactly on the ground plane, because ROS considers the joint frame to be the same
+        as the child frame.
+    -->
+    <joint name="joint_base_to_footprint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 ${wheel_radius + 0.5 * chassis_height}"/>
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+    </joint>
+    <link name="base_link">
+    </link>
+
+    <!--
+        A box that pretends to be the ground. Used for testing that the scuttle model has been assembled correctly.
+    -->
+    <!--
+    <joint name="joint_ground_to_footprint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="base_footprint"/>
+        <child link="ground_for_testing"/>
+    </joint>
+    <link name="ground_for_testing">
+        <visual>
+            <geometry>
+                <box size="0.5 0.5 0.01"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0.25 -0.25 -0.005"/>
+        </visual>
+    </link>
+    -->
+
+    <!-- The chassis of cratebot -->
+    <!--
+        Define the connection between base_link and chassis_link. Relative to base_link the joint
+        is exactly in the c.o.g of the chassis, because ROS considers the joint frame to be the same
+        as the child frame.
+    -->
+    <joint name="chassis_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+        <parent link="base_link"/>
+        <child link="chassis_link"/>
+    </joint>
+
+    <!--
+      The coordinate framework has the X-asis in the direction of forward motion, with the y-axis pointing
+      to the left. This is equivalent to the coordinate system defined by the kinematics guide.
+    -->
+    <link name="chassis_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
+            <mass value="${chassis_mass}"/>
+            <inertia
+                ixx="${chassis_mass / 12.0 * (chassis_width * chassis_width + chassis_height * chassis_height)}"
+                ixy="0"
+                ixz="0"
+                iyy="${chassis_mass / 12.0 * (chassis_length * chassis_length + chassis_height * chassis_height)}"
+                iyz="0"
+                izz="${chassis_mass / 12.0 * (chassis_length * chassis_length + chassis_width * chassis_width)}"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+            </geometry>
+            <material name="silver"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0.0"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+            </geometry>
+        </collision>
+    </link>
+
+    <!--
+        Left front wheel assembly
+    -->
+    <xacro:drive_module_assembly
+        name="left_front"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${front_x_reflect}"
+        y_reflect="${left_y_reflect}" />
+
+    <!--
+        Right front wheel assembly
+    -->
+    <xacro:drive_module_assembly
+        name="right_front"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${front_x_reflect}"
+        y_reflect="${right_y_reflect}" />
+
+    <!--
+        Left rear wheel assembly
+    -->
+    <xacro:drive_module_assembly
+        name="left_rear"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${rear_x_reflect}"
+        y_reflect="${left_y_reflect}" />
+
+    <!--
+        Right rear wheel assembly
+    -->
+    <xacro:drive_module_assembly
+        name="right_rear"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${rear_x_reflect}"
+        y_reflect="${right_y_reflect}" />
+
+    <ros2_control name="CratebotJointControl" type="system">
+        <xacro:if value="$(arg is_simulation)">
+            <hardware>
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
+            </hardware>
+        </xacro:if>
+        <xacro:unless value="$(arg is_simulation)">
+            <xacro:if value="$(arg use_fake_hardware)">
+                <hardware>
+                    <plugin>mock_components/GenericSystem</plugin>
+                </hardware>
+            </xacro:if>
+            <xacro:unless value="$(arg use_fake_hardware)">
+                <!-- USE REAL HARDWARE HERE -->
+                <hardware>
+                </hardware>
+            </xacro:unless>
+        </xacro:unless>
+        <xacro:steering_module_controller name="left_front" />
+        <xacro:steering_module_controller name="right_front" />
+        <xacro:steering_module_controller name="left_rear" />
+        <xacro:steering_module_controller name="right_rear" />
+    </ros2_control>
+</robot>

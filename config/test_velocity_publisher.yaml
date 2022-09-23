@@ -1,0 +1,11 @@
+publisher_velocity_controller:
+  ros__parameters:
+
+    controller_name: "velocity_controller"
+    wait_sec_between_publish: 5
+
+    goal_names: ["velocity1", "velocity2", "velocity3", "velocity4"]
+    velocity1: [1.0, 1.0, 1.0, 1.0]
+    velocity2: [0.0, 0.0, 0.0, 0.0]
+    velocity3: [-1.0, -1.0, -1.0, -1.0]
+    velocity4: [0.0, 0.0, 0.0, 0.0]

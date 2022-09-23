@@ -1,0 +1,173 @@
+<?xml version="1.0" ?>
+<robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <!--
+        A macro to create a wheel link and the joint for the wheel
+        Parameters:
+        - name: Name of the wheel, e.g. left_rear
+        - mass: Mass of the wheel in kilogram
+        - radius: Radius of the wheel in meters
+        - width: Width of the wheel in meters
+        - offset: The distance between the wheel and the steering plate above the wheel. In meters.
+    -->
+    <xacro:macro name="wheel_assembly" params="name mass radius width offset">
+        <joint name="joint_steering_to_wheel_${name}" type="continuous">
+            <origin rpy="0 0 0" xyz="0 0 ${-1 * (radius + offset)}"/>
+            <parent link="link_steering_${name}"/>
+            <child link="link_wheel_${name}"/>
+            <axis xyz="0.0 1.0 0.0"/>
+        </joint>
+
+        <link name="link_wheel_${name}">
+            <inertial>
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+                <mass value="${mass}"/>
+                <inertia
+                    ixx="${(mass/12) * (3*radius*radius + width*width)}"
+                    ixy="0"
+                    ixz="0"
+                    iyy="${(mass/12) * (3*radius*radius + width*width)}"
+                    iyz="0"
+                    izz="${(mass/2) * (radius*radius)}"/>
+            </inertial>
+            <visual>
+                <origin rpy="${PI/2} 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${width}" radius="${radius}" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin rpy="${PI/2} 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${width}" radius="${radius}" />
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <!--
+        A macro to create a steering link and the joint for the steering unit
+        Parameters:
+        - name: Name of the steering unit, e.g. left_rear
+        - mass: Mass of the steering unit in kilogram
+        - chassis_length: The length of the chassis
+        - chassis_width: The width of the chassis
+        - chassis_height: The height of the chassis
+        - steering_radius: Radius of the steering unit in meters
+        - wheel_radius: Radius of the wheel in meters
+        - thickness: Thickness of the steering unit
+        - offset: The distance between the wheel and the steering plate above the wheel. In meters.
+        - x_reflect: Direction multiplier for X offsets. Either 1 or -1
+        - y_reflect: Direction multiplier for Y offsets. Either 1 or -1
+    -->
+    <xacro:macro name="steering_assembly" params="name mass chassis_length chassis_width chassis_height steering_radius thickness wheel_radius offset x_reflect y_reflect">
+        <joint name="joint_chassis_to_steering_${name}" type="continuous">
+            <origin rpy="0 0 0" xyz="${x_reflect * (0.5 * chassis_length - steering_radius)} ${y_reflect * (0.5 * chassis_width + steering_radius)} ${0.5 * chassis_height - 0.5 * thickness}"/>
+            <parent link="chassis_link"/>
+            <child link="link_steering_${name}"/>
+            <axis xyz="0.0 0.0 1.0"/>
+        </joint>
+
+        <link name="link_steering_${name}">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <mass value="${mass}"/>
+                <inertia
+                    ixx="${(mass/12) * (3*steering_radius*steering_radius + thickness*thickness)}"
+                    ixy="0"
+                    ixz="0"
+                    iyy="${(mass/12) * (3*steering_radius*steering_radius + thickness*thickness)}"
+                    iyz="0"
+                    izz="${(mass/2) * (steering_radius*steering_radius)}"/>
+            </inertial>
+
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${thickness}" radius="${steering_radius}" />
+                </geometry>
+                <material name="blue"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <cylinder length="${thickness}" radius="${steering_radius}" />
+                </geometry>
+            </collision>
+
+            <visual>
+                <origin rpy="0 0 0" xyz="0 ${y_reflect * wheel_radius} ${-1 * 0.5 * (thickness + wheel_radius + 2 * offset)}"/>
+                <geometry>
+                    <box size="${wheel_radius} 0.01 ${wheel_radius + 2 * offset}" />
+                </geometry>
+                <material name="blue"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 ${y_reflect * wheel_radius} ${-1 * 0.5 * (thickness + wheel_radius + 2 * offset)}"/>
+                <geometry>
+                    <box size="${wheel_radius} 0.01 ${wheel_radius + 2 * offset}" />
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <!--
+        A macro to create a wheel link and the joint for the wheel
+        Parameters:
+        - name: Name of the wheel, e.g. left_rear
+        - chassis_length: The length of the chassis
+        - chassis_width: The width of the chassis
+        - chassis_height: The height of the chassis
+        - wheel_mass: Mass of the wheel in kilogram
+        - wheel_radius: Radius of the wheel in meters
+        - wheel_width: Width of the wheel in meters
+        - offset: The distance between the wheel and the steering plate above the wheel. In meters.
+        - x_reflect: Direction multiplier for X offsets. Either 1 or -1
+        - y_reflect: Direction multiplier for Y offsets. Either 1 or -1
+    -->
+    <xacro:macro name="drive_module_assembly" params="name chassis_length chassis_width chassis_height wheel_mass wheel_radius wheel_width steering_mass steering_radius steering_thickness offset x_reflect y_reflect">
+        <xacro:steering_assembly
+            name="${name}"
+            mass="${steering_mass}"
+            chassis_length="${chassis_length}"
+            chassis_width="${chassis_width}"
+            chassis_height="${chassis_height}"
+            steering_radius="${steering_radius}"
+            thickness="${steering_thickness}"
+            wheel_radius="${wheel_radius}"
+            offset="${offset}"
+            x_reflect="${x_reflect}"
+            y_reflect="${y_reflect}"/>
+        <xacro:wheel_assembly
+            name="${name}"
+            mass="${wheel_mass}"
+            radius="${wheel_radius}"
+            width="${wheel_width}"
+            offset="${offset}"/>
+    </xacro:macro>
+
+
+    <!-- CONTROLLERS -->
+    <xacro:macro name="steering_module_controller" params="name">
+        <joint name="joint_chassis_to_steering_${name}">
+            <command_interface name="position">
+                <param name="min">-1</param>
+                <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+        <joint name="joint_steering_to_wheel_${name}">
+            <command_interface name="velocity">
+                <param name="min">-1</param>
+                <param name="max">1</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+        </joint>
+    </xacro:macro>
+
+</robot>
