@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="cratebot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="tblaze" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
     <!--
         A macro to create a wheel link and the joint for the wheel
