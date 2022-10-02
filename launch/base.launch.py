@@ -40,7 +40,7 @@ def generate_launch_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([get_package_share_directory('cratebot_description'), "urdf", 'base.xacro']),
+            PathJoinSubstitution([get_package_share_directory('tblaze_description'), "urdf", 'base.xacro']),
             " ",
             "is_simulation:=",
             is_simulation,

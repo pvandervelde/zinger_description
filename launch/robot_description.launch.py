@@ -38,7 +38,7 @@ def generate_launch_description():
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
 
     pkg_robot_description = get_package_share_directory(
-        'cratebot_description')
+        'tblaze_description')
 
     base_launch = PathJoinSubstitution(
         [pkg_robot_description, 'launch', 'base.launch.py'])

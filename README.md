@@ -1,6 +1,6 @@
-# cratebot_description
+# tblaze_description
 
-Provides the geometric description of the cratebot robot for use with
+Provides the geometric description of the tblaze robot for use with
 [RViz](http://wiki.ros.org/rviz), [Gazebo](https://gazebosim.org/) and other [ROS](https://docs.ros.org/en/humble/index.html#)
 nodes.
 
@@ -20,7 +20,7 @@ robot using Raspberry Pi OS.
 This repository contains different folders for the different parts of the robot description.
 
 * The config files that provide the configurations for the ROS control actuators and the test publishers
-  * [config/cratebot.yaml](config/cratebot.yaml) defines the settings for the position controller, used
+  * [config/tblaze.yaml](config/tblaze.yaml) defines the settings for the position controller, used
     for the steering angle of each wheel, and the velocity controller, used to drive the wheel forwards
     or backwards.
   * [config/test_joint_trajectory_publisher.yaml](config/test_joint_trajectory_publisher.yaml) defines the
@@ -53,5 +53,5 @@ This repository contains different folders for the different parts of the robot 
 
 ## Usage
 
-In general the `cratebot_description` package will not directly be launched. It is designed to be
+In general the `tblaze_description` package will not directly be launched. It is designed to be
 referenced by other SCUTTLE ROS packages.

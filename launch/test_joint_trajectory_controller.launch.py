@@ -22,7 +22,7 @@ def generate_launch_description():
 
     position_goals = PathJoinSubstitution(
         [
-            FindPackageShare("cratebot_description"),
+            FindPackageShare("tblaze_description"),
             "config",
             "test_joint_trajectory_publisher.yaml",
         ]
@@ -31,7 +31,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="cratebot_controller_test_nodes",
+                package="tblaze_controller_test_nodes",
                 executable="publisher_joint_trajectory_controller",
                 name="publisher_joint_trajectory_controller",
                 parameters=[position_goals],
