@@ -32,8 +32,8 @@
     <xacro:property name="front_x_reflect" value="1" />
     <xacro:property name="rear_x_reflect" value="-1" />
 
-    <xacro:property name="left_y_reflect" value="-1" />
-    <xacro:property name="right_y_reflect" value="1" />
+    <xacro:property name="left_y_reflect" value="1" />
+    <xacro:property name="right_y_reflect" value="-1" />
 
     <!-- INCLUDES -->
 
