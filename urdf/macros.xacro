@@ -144,7 +144,7 @@
             mass="${wheel_mass}"
             radius="${wheel_radius}"
             width="${wheel_width}"
-            offset="${offset}"/>
+            offset="${offset + 0.5 * steering_thickness}"/>
     </xacro:macro>
 
 
