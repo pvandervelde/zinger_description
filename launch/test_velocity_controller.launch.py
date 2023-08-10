@@ -22,7 +22,7 @@ def generate_launch_description():
 
     velocity_goals = PathJoinSubstitution(
         [
-            FindPackageShare("tblaze_description"),
+            FindPackageShare("zinger_description"),
             "config",
             "test_velocity_publisher.yaml",
         ]
@@ -31,7 +31,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="tblaze_controller_test_nodes",
+                package="zinger_controller_test_nodes",
                 executable="publisher_velocity_controller",
                 name="publisher_velocity_controller",
                 parameters=[velocity_goals],
