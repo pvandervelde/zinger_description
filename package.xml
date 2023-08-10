@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>tblaze_description</name>
+  <name>zinger_description</name>
   <version>0.1.0</version>
-  <description>The tblaze_description package</description>
+  <description>The zinger_description package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

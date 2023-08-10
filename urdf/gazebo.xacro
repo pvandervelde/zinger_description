@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="tblaze" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot name="zinger" xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
     <!--
         GAZEBO MACROS
@@ -31,7 +31,7 @@
 
     <gazebo>
         <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-            <parameters>$(find tblaze_description)/config/tblaze.yaml</parameters>
+            <parameters>$(find zinger_description)/config/zinger.yaml</parameters>
         </plugin>
     </gazebo>
 </robot>
