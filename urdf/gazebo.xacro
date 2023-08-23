@@ -30,8 +30,24 @@
     <xacro:gazebo_reference_link_wheel name="right_rear" />
 
     <gazebo>
-        <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <plugin
+                filename="ign_ros2_control-system"
+                name="ign_ros2_control::IgnitionROS2ControlPlugin">
             <parameters>$(find zinger_description)/config/zinger.yaml</parameters>
+        </plugin>
+    </gazebo>
+    <gazebo>
+         <plugin
+                filename="libignition-gazebo-pose-publisher-system.so"
+                name="ignition::gazebo::systems::PosePublisher">
+            <publish_link_pose>true</publish_link_pose>
+            <publish_sensor_pose>true</publish_sensor_pose>
+            <publish_collision_pose>false</publish_collision_pose>
+            <publish_visual_pose>false</publish_visual_pose>
+            <publish_nested_model_pose>true</publish_nested_model_pose>
+            <use_pose_vector_msg>true</use_pose_vector_msg>
+            <static_publisher>true</static_publisher>
+            <static_update_frequency>1</static_update_frequency>
         </plugin>
     </gazebo>
 </robot>
