@@ -54,6 +54,7 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
 
+    # Takes the joint positions from the 'joint_state' topic and updates the position of the robot with tf2.
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',

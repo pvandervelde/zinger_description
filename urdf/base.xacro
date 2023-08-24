@@ -149,24 +149,6 @@
         y_reflect="${left_y_reflect}" />
 
     <!--
-        Right front wheel assembly
-    -->
-    <xacro:drive_module_assembly
-        name="right_front"
-        chassis_length="${chassis_length}"
-        chassis_width="${chassis_width}"
-        chassis_height="${chassis_height}"
-        wheel_mass="${wheel_mass}"
-        wheel_radius="${wheel_radius}"
-        wheel_width="${wheel_width}"
-        steering_mass="${steering_mass}"
-        steering_radius="${steering_radius}"
-        steering_thickness="${steering_thickness}"
-        offset="${wheel_offset}"
-        x_reflect="${front_x_reflect}"
-        y_reflect="${right_y_reflect}" />
-
-    <!--
         Left rear wheel assembly
     -->
     <xacro:drive_module_assembly
@@ -200,6 +182,24 @@
         steering_thickness="${steering_thickness}"
         offset="${wheel_offset}"
         x_reflect="${rear_x_reflect}"
+        y_reflect="${right_y_reflect}" />
+
+    <!--
+        Right front wheel assembly
+    -->
+    <xacro:drive_module_assembly
+        name="right_front"
+        chassis_length="${chassis_length}"
+        chassis_width="${chassis_width}"
+        chassis_height="${chassis_height}"
+        wheel_mass="${wheel_mass}"
+        wheel_radius="${wheel_radius}"
+        wheel_width="${wheel_width}"
+        steering_mass="${steering_mass}"
+        steering_radius="${steering_radius}"
+        steering_thickness="${steering_thickness}"
+        offset="${wheel_offset}"
+        x_reflect="${front_x_reflect}"
         y_reflect="${right_y_reflect}" />
 
     <ros2_control name="ZingerJointControl" type="system">
