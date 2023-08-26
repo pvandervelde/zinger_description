@@ -2,16 +2,16 @@ controller_manager:
   ros__parameters:
     update_rate: 1000  # Hz
 
-    position_trajectory_controller:
+    drive_module_steering_angle_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    velocity_controller:
+    drive_module_velocity_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-position_trajectory_controller:
+drive_module_steering_angle_controller:
   ros__parameters:
     joints:
       - joint_chassis_to_steering_left_front
@@ -26,7 +26,7 @@ position_trajectory_controller:
       - acceleration
     allow_nonzero_velocity_at_trajectory_end: false
 
-velocity_controller:
+drive_module_velocity_controller:
   ros__parameters:
     joints:
       - joint_steering_to_wheel_left_front
