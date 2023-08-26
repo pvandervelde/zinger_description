@@ -23,7 +23,6 @@ drive_module_steering_angle_controller:
     state_interfaces:
       - position
       - velocity
-      - acceleration
     allow_nonzero_velocity_at_trajectory_end: false
 
 drive_module_velocity_controller:
@@ -38,6 +37,5 @@ drive_module_velocity_controller:
     state_interfaces:
       - position
       - velocity
-      - acceleration
     allow_nonzero_velocity_at_trajectory_end: true
     allow_integration_in_goal_trajectories: true
