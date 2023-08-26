@@ -40,3 +40,4 @@ velocity_controller:
       - velocity
       - acceleration
     allow_nonzero_velocity_at_trajectory_end: true
+    allow_integration_in_goal_trajectories: true
