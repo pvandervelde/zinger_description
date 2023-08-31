@@ -20,9 +20,12 @@ drive_module_steering_angle_controller:
       - joint_chassis_to_steering_right_rear
     command_interfaces:
       - position
+      - velocity
+      - acceleration
     state_interfaces:
       - position
       - velocity
+      - acceleration
     allow_nonzero_velocity_at_trajectory_end: false
 
 drive_module_velocity_controller:
@@ -34,8 +37,10 @@ drive_module_velocity_controller:
       - joint_steering_to_wheel_right_rear
     command_interfaces:
       - velocity
+      - acceleration
     state_interfaces:
       - position
       - velocity
+      - acceleration
     allow_nonzero_velocity_at_trajectory_end: true
     allow_integration_in_goal_trajectories: true
