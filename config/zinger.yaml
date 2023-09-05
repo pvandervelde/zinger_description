@@ -3,10 +3,10 @@ controller_manager:
     update_rate: 250  # Hz
 
     drive_module_steering_angle_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
+      type: position_controllers/JointGroupPositionController
 
     drive_module_velocity_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
+      type: velocity_controllers/JointGroupVelocityController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -18,13 +18,6 @@ drive_module_steering_angle_controller:
       - joint_chassis_to_steering_right_front
       - joint_chassis_to_steering_left_rear
       - joint_chassis_to_steering_right_rear
-    command_interfaces:
-      - position
-      - velocity
-    state_interfaces:
-      - position
-      - velocity
-    allow_nonzero_velocity_at_trajectory_end: false
 
 drive_module_velocity_controller:
   ros__parameters:
@@ -33,18 +26,3 @@ drive_module_velocity_controller:
       - joint_steering_to_wheel_right_front
       - joint_steering_to_wheel_left_rear
       - joint_steering_to_wheel_right_rear
-    command_interfaces:
-      - velocity
-    state_interfaces:
-      - position
-      - velocity
-    allow_nonzero_velocity_at_trajectory_end: true
-    allow_integration_in_goal_trajectories: true
-
-    # Initial versions based on: http://wiki.ros.org/joint_trajectory_controller
-    # Required because we're controlling a velocity interface
-    gains:
-      joint_steering_to_wheel_left_front: { p: 10,  d: 1, i: 1, i_clamp: 1, ff_velocity_scale: 1.0 }
-      joint_steering_to_wheel_right_front: { p: 10,  d: 1, i: 1, i_clamp: 1, ff_velocity_scale: 1.0 }
-      joint_steering_to_wheel_left_rear: { p: 10,  d: 1, i: 1, i_clamp: 1, ff_velocity_scale: 1.0 }
-      joint_steering_to_wheel_right_rear: { p: 10,  d: 1, i: 1, i_clamp: 1, ff_velocity_scale: 1.0 }
