@@ -60,7 +60,8 @@ def generate_launch_description():
         ]
     )
 
-    # When running in Ignition / Gazebo it runs a different controller manager so we don't need this one?
+    # When running in Ignition / Gazebo it runs a different controller manager so we can't use this one.
+    # So that's why it is in a different file.
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",

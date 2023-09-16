@@ -41,6 +41,8 @@ def generate_launch_description():
 
     ld = LaunchDescription(ARGUMENTS)
 
+    # Only launch the controller manager if we are not in a simulation
+    # If we are in a simulation, then Gazebo runs its own controller manager
     controller_manager_launch_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([controller_manager_launch]),
         launch_arguments=[
