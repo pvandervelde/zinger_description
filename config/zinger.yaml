@@ -15,14 +15,14 @@ drive_module_steering_angle_controller:
   ros__parameters:
     joints:
       - joint_chassis_to_steering_left_front
-      - joint_chassis_to_steering_right_front
       - joint_chassis_to_steering_left_rear
       - joint_chassis_to_steering_right_rear
+      - joint_chassis_to_steering_right_front
 
 drive_module_velocity_controller:
   ros__parameters:
     joints:
       - joint_steering_to_wheel_left_front
-      - joint_steering_to_wheel_right_front
       - joint_steering_to_wheel_left_rear
       - joint_steering_to_wheel_right_rear
+      - joint_steering_to_wheel_right_front
