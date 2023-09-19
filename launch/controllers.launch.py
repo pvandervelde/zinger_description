@@ -41,6 +41,8 @@ def generate_launch_description():
 
     ld = LaunchDescription(ARGUMENTS)
 
+    # Only launch the controller manager if we are not in a simulation
+    # If we are in a simulation, then Gazebo runs its own controller manager
     controller_manager_launch_include = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([controller_manager_launch]),
         launch_arguments=[
@@ -61,24 +63,24 @@ def generate_launch_description():
 
     postion_trajectory_controller_spawner = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'position_trajectory_controller'],
+             'drive_module_steering_angle_controller'],
         output='screen'
     )
 
     # Delay creating the position trajectory controller until the joint_state_broadcast node has been started so that
     # the position trajectory controller can get the different TF frames from the broadcaster
-    delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+    delay_steering_angle_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_node,
             on_exit=[postion_trajectory_controller_spawner],
         )
     )
-    ld.add_action(delay_position_trajectory_controller_spawner_after_joint_state_broadcaster_spawner)
+    ld.add_action(delay_steering_angle_controller_spawner_after_joint_state_broadcaster_spawner)
 
 
     velocity_controller_spawner = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'velocity_controller'],
+             'drive_module_velocity_controller'],
         output='screen'
     )
 

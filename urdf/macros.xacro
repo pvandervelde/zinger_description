@@ -152,12 +152,12 @@
     <xacro:macro name="steering_module_controller" params="name">
         <joint name="joint_chassis_to_steering_${name}">
             <command_interface name="position">
-                <param name="min">-1</param>
-                <param name="max">1</param>
+                <param name="min">-${2 * PI}</param>
+                <param name="max">${2 * PI}</param>
             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
-            <state_interface name="effort"/>
+            <state_interface name="acceleration"/>
         </joint>
         <joint name="joint_steering_to_wheel_${name}">
             <command_interface name="velocity">
@@ -166,7 +166,7 @@
             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
-            <state_interface name="effort"/>
+            <state_interface name="acceleration"/>
         </joint>
     </xacro:macro>
 

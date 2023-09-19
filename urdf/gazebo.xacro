@@ -25,9 +25,9 @@
         GAZEBO
     -->
     <xacro:gazebo_reference_link_wheel name="left_front" />
-    <xacro:gazebo_reference_link_wheel name="right_front" />
     <xacro:gazebo_reference_link_wheel name="left_rear" />
     <xacro:gazebo_reference_link_wheel name="right_rear" />
+    <xacro:gazebo_reference_link_wheel name="right_front" />
 
     <gazebo>
         <plugin

@@ -1,7 +1,7 @@
 # zinger_description
 
 Provides the geometric description of the zinger robot for use with
-[RViz](http://wiki.ros.org/rviz), [Gazebo](https://gazebosim.org/) and other [ROS](https://docs.ros.org/en/humble/index.html#)
+[RViz](http://wiki.ros.org/rviz), [Gazebo](https://gazebosim.org/) and other [ROS 2](https://docs.ros.org/en/humble/index.html#)
 nodes.
 
 ## Dependencies
@@ -23,15 +23,11 @@ This repository contains different folders for the different parts of the robot 
   * [config/zinger.yaml](config/zinger.yaml) defines the settings for the position controller, used
     for the steering angle of each wheel, and the velocity controller, used to drive the wheel forwards
     or backwards.
-  * [config/test_joint_trajectory_publisher.yaml](config/test_joint_trajectory_publisher.yaml) defines the
-    settings for the test publisher that changes the steering angle of all the wheel modules.
-  * [config/test_velocity_publisher.yaml](config/test_velocity_publisher.yaml) defines the settings for
-    the test publisher that changes the wheel velocity for all the wheel modules.
 * The launch directory contains the launch files
   * [launch/base.launch.py](launch/base.launch.py) - Launches the `robot_state_publisher` which is
     always needed.
   * [launch/controller_manager.launch.py](launch/controller_manager.launch.py - Launches the ROS control
-    `controller_manager` node. Should only not be launched if the robot is being simulated in Gazebo.
+    `controller_manager` node. Should not be launched if the robot is being simulated in Gazebo.
   * [launch/controllers.launch.py](launch/controllers.launch.py) - Launches the appropriate ROS controllers
     for the robot.
   * [launch/robot_description.launch.py](launch/robot_description.launch.py) - The launch file for
