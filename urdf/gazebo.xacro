@@ -31,8 +31,8 @@
 
     <gazebo>
         <plugin
-                filename="ign_ros2_control-system"
-                name="ign_ros2_control::IgnitionROS2ControlPlugin">
+                filename="libgz_ros2_control-system.so"
+                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find zinger_description)/config/zinger.yaml</parameters>
         </plugin>
     </gazebo>
