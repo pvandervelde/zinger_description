@@ -171,6 +171,50 @@
     </xacro:macro>
 
     <!-- SENSORS -->
+    <!-- IMU sensor -->
+    <xacro:macro name="sensor_imu" params="name parent_link *origin">
+        <xacro:property name="mass"     value="0.01"/>
+        <xacro:property name="length_x" value="0.01" />
+        <xacro:property name="length_y" value="0.01" />
+        <xacro:property name="length_z" value="0.01" />
+
+        <xacro:property name="collision_x_offset" value="0.005" />
+        <xacro:property name="collision_y_offset" value="0.005" />
+        <xacro:property name="collision_z_offset" value="0.005" />
+
+        <joint name="joint_body_to_sensor_${name}" type="fixed">
+            <xacro:insert_block name="origin"/>
+            <parent link="${parent_link}"/>
+            <child link="link_sensor_imu_${name}"/>
+        </joint>
+
+        <link name="link_sensor_imu_${name}">
+            <visual>
+                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
+                <geometry>
+                    <box size="${length_x} ${length_y} ${length_z}"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
+                <geometry>
+                    <box size="${length_x} ${length_y} ${length_z}"/>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="${mass}" />
+                <xacro:insert_block name="origin"/>
+                <inertia
+                    ixx="${(1/12) * mass * (length_y*length_y + length_z*length_z)}"
+                    ixy="0.0"
+                    ixz="0.0"
+                    iyy="${(1/12) * mass * (length_x*length_x + length_z*length_z)}"
+                    iyz="0.0"
+                    izz="${(1/12) * mass * (length_x*length_x + length_y*length_y)}" />
+            </inertial>
+        </link>
+    </xacro:macro>
+
     <!-- Lidar sensor -->
     <xacro:macro name="sensor_lidar" params="name parent_link *origin">
 
@@ -206,59 +250,17 @@
                 <mass value="${mass}" />
                 <xacro:insert_block name="origin"/>
                 <inertia
-                    ixx="${(1/12) * ${mass} * (${length_y}*${length_y} + ${length_z}*${length_z})}"
+                    ixx="${(1/12) * mass * (length_y*length_y + length_z*length_z)}"
                     ixy="0.0"
                     ixz="0.0"
-                    iyy="${(1/12) * ${mass} * (${length_x}*${length_x} + ${length_z}*${length_z})}"
+                    iyy="${(1/12) * mass * (length_x*length_x + length_z*length_z)}"
                     iyz="0.0"
-                    izz="${(1/12) * ${mass} * (${length_x}*${length_x} + ${length_y}*${length_y})}" />
+                    izz="${(1/12) * mass * (length_x*length_x + length_y*length_y)}" />
             </inertial>
         </link>
     </xacro:macro>
 
-    <!-- IMU sensor -->
-    <xacro:macro name="sensor_imu" params="name parent_link *origin">
-        <xacro:property name="mass"     value="0.01"/>
-        <xacro:property name="length_x" value="0.01" />
-        <xacro:property name="length_y" value="0.01" />
-        <xacro:property name="length_z" value="0.01" />
 
-        <xacro:property name="collision_x_offset" value="0.005" />
-        <xacro:property name="collision_y_offset" value="0.005" />
-        <xacro:property name="collision_z_offset" value="0.005" />
-
-        <joint name="joint_body_to_sensor_${name}" type="fixed">
-            <xacro:insert_block name="origin"/>
-            <parent link="${parent_link}"/>
-            <child link="link_sensor_imu_${name}"/>
-        </joint>
-
-        <link name="link_sensor_imu_${name}">
-            <visual>
-                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
-                <geometry>
-                    <box size="${length_x} ${length_y} ${length_z}"/>
-                </geometry>
-            </visual>
-            <collision>
-                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
-                <geometry>
-                    <box size="${length_x} ${length_y} ${length_z}"/>
-                </geometry>
-            </collision>
-            <inertial>
-                <mass value="${mass}" />
-                <xacro:insert_block name="origin"/>
-                <inertia
-                    ixx="${(1/12) * ${mass} * (${length_y}*${length_y} + ${length_z}*${length_z})}"
-                    ixy="0.0"
-                    ixz="0.0"
-                    iyy="${(1/12) * ${mass} * (${length_x}*${length_x} + ${length_z}*${length_z})}"
-                    iyz="0.0"
-                    izz="${(1/12) * ${mass} * (${length_x}*${length_x} + ${length_y}*${length_y})}" />
-            </inertial>
-        </link>
-    </xacro:macro>
 
     <!-- Bump sensor -->
 
