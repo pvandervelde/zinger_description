@@ -235,7 +235,7 @@
 
     <!-- LIDAR -->
     <xacro:sensor_lidar name="rplidar_front" parent_link="chassis_link">
-        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0 0 0" xyz="0 0 ${0.5 * chassis_height}"/>
     </xacro:sensor_lidar>
 
     <!-- Bump -->

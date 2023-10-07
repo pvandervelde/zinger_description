@@ -21,40 +21,7 @@
         </gazebo>
     </xacro:macro>
 
-    <xacro:macro name="gazebo_sensor_rplidar" params="name" >
-        <gazebo reference="link_sensor_lidar_${name}">
-            <sensor name="${name}" type="gpu_lidar">
-                <update_rate>62.0</update_rate>
-                <visualize>1</visualize>
-                <always_on>true</always_on>
-                <lidar>
-                <scan>
-                    <horizontal>
-                        <samples>640</samples>
-                        <resolution>1.0</resolution>
-                        <min_angle>${-pi}</min_angle>
-                        <max_angle>${pi}</max_angle>
-                    </horizontal>
-                    <vertical>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </vertical>
-                </scan>
-                <range>
-                    <min>0.164</min>
-                    <max>12.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-                </lidar>
-            </sensor>
-        </gazebo>
-
-        <gazebo reference="joint_body_to_sensor_lidar_${name}">
-            <preserveFixedJoint>true</preserveFixedJoint>
-        </gazebo>
-    </xacro:macro>
+    <!-- Sensors -->
 
     <xacro:macro name="gazebo_sensor_imu" params="name update_rate:=62" >
         <gazebo reference="link_sensor_imu_${name}">
@@ -111,6 +78,41 @@
         </gazebo>
     </xacro:macro>
 
+    <xacro:macro name="gazebo_sensor_rplidar" params="name" >
+        <gazebo reference="link_sensor_lidar_${name}">
+            <sensor name="${name}" type="gpu_lidar">
+                <update_rate>62.0</update_rate>
+                <visualize>1</visualize>
+                <always_on>true</always_on>
+                <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>640</samples>
+                        <resolution>1.0</resolution>
+                        <min_angle>${-pi}</min_angle>
+                        <max_angle>${pi}</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>1</samples>
+                        <resolution>1</resolution>
+                        <min_angle>0</min_angle>
+                        <max_angle>0</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.164</min>
+                    <max>12.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                </lidar>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="joint_body_to_sensor_lidar_${name}">
+            <preserveFixedJoint>true</preserveFixedJoint>
+        </gazebo>
+    </xacro:macro>
+
     <!--
         GAZEBO
     -->
@@ -119,8 +121,8 @@
     <xacro:gazebo_reference_link_wheel name="right_rear" />
     <xacro:gazebo_reference_link_wheel name="right_front" />
 
-    <xacro:gazebo_sensor_rplidar name="rplidar_front" />
     <xacro:gazebo_sensor_imu name="imu_center" />
+    <xacro:gazebo_sensor_rplidar name="rplidar_front" />
 
     <gazebo>
         <plugin

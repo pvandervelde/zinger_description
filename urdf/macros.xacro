@@ -180,7 +180,7 @@
 
         <xacro:property name="collision_x_offset" value="0.005" />
         <xacro:property name="collision_y_offset" value="0.005" />
-        <xacro:property name="collision_z_offset" value="0.005" />
+        <xacro:property name="collision_z_offset" value="${0.5 * length_z}" />
 
         <joint name="joint_body_to_sensor_${name}" type="fixed">
             <xacro:insert_block name="origin"/>
@@ -224,8 +224,8 @@
         <xacro:property name="length_z" value="0.06" />
 
         <xacro:property name="collision_x_offset" value="0" />
-        <xacro:property name="collision_y_offset" value="0.013" />
-        <xacro:property name="collision_z_offset" value="-0.019" />
+        <xacro:property name="collision_y_offset" value="0" />
+        <xacro:property name="collision_z_offset" value="${0.5 * length_z}" />
 
         <joint name="joint_body_to_sensor_lidar_${name}" type="fixed">
             <parent link="${parent_link}"/>
