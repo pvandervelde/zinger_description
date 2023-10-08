@@ -165,5 +165,6 @@
             <updateRate>62</updateRate>
             <topic>/rplidar_front/scan</topic>
             <lidarName>rplidar_front</lidarName>
+        </plugin>
     </gazebo>
 </robot>
