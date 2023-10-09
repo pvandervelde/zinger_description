@@ -182,7 +182,7 @@
         <xacro:property name="collision_y_offset" value="0.005" />
         <xacro:property name="collision_z_offset" value="${0.5 * length_z}" />
 
-        <joint name="joint_body_to_sensor_${name}" type="fixed">
+        <joint name="joint_body_to_sensor_imu_${name}" type="fixed">
             <xacro:insert_block name="origin"/>
             <parent link="${parent_link}"/>
             <child link="link_sensor_imu_${name}"/>
