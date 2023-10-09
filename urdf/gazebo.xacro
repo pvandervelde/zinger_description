@@ -81,30 +81,31 @@
     <xacro:macro name="gazebo_sensor_rplidar" params="name" >
         <gazebo reference="link_sensor_lidar_${name}">
             <sensor name="${name}" type="lidar">
-                <update_rate>62.0</update_rate>
-                <visualize>1</visualize>
-                <always_on>true</always_on>
-                <lidar>
-                <scan>
-                    <horizontal>
-                        <samples>640</samples>
-                        <resolution>1.0</resolution>
-                        <min_angle>${-pi}</min_angle>
-                        <max_angle>${pi}</max_angle>
-                    </horizontal>
-                    <vertical>
-                        <samples>1</samples>
-                        <resolution>1</resolution>
-                        <min_angle>0</min_angle>
-                        <max_angle>0</max_angle>
-                    </vertical>
-                </scan>
-                <range>
-                    <min>0.164</min>
-                    <max>12.0</max>
-                    <resolution>0.01</resolution>
-                </range>
-                </lidar>
+                <alwaysOn>true</alwaysOn>
+                <topic>rplidar_front/scan</topic>
+                <lidarName>rplidar_front</lidarName>
+                <visualize>true</visualize>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>640</samples>
+                            <resolution>1.0</resolution>
+                            <min_angle>${-pi}</min_angle>
+                            <max_angle>${pi}</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.164</min>
+                        <max>12.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                </ray>
             </sensor>
         </gazebo>
 
@@ -151,20 +152,17 @@
                 filename="libignition-gazebo-imu-system.so"
                 name="ignition::gazebo::systems::Imu">
             <alwaysOn>true</alwaysOn>
-            <updateRate>62</updateRate>
-            <topic>/imu</topic>
+            <updateRate>25</updateRate>
+            <topic>imu</topic>
             <imuName>imu_center</imuName>
         </plugin>
     </gazebo>
 
     <gazebo>
         <plugin
-                filename="libignition-gazebo-lidar-system.so"
-                name="ignition::gazebo::systems::Lidar">
-            <alwaysOn>true</alwaysOn>
-            <updateRate>62</updateRate>
-            <topic>/rplidar_front/scan</topic>
-            <lidarName>rplidar_front</lidarName>
+                filename="libignition-gazebo-sensors-system.so"
+                name="ignition::gazebo::systems::Sensors">
+
         </plugin>
     </gazebo>
 </robot>
