@@ -248,7 +248,7 @@
             </collision>
             <inertial>
                 <mass value="${mass}" />
-                <xacro:insert_block name="origin"/>
+                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
                 <inertia
                     ixx="${(1/12) * mass * (length_y*length_y + length_z*length_z)}"
                     ixy="0.0"
