@@ -216,7 +216,7 @@
     </xacro:macro>
 
     <!-- Lidar sensor -->
-    <xacro:macro name="sensor_lidar" params="name parent_link *origin">
+    <xacro:macro name="sensor_lidar" params="name parent_link chassis_top_absolute_height">
 
         <xacro:property name="mass"     value="0.17"/>
         <xacro:property name="length_x" value="0.071" />
@@ -225,23 +225,23 @@
 
         <xacro:property name="collision_x_offset" value="0" />
         <xacro:property name="collision_y_offset" value="0" />
-        <xacro:property name="collision_z_offset" value="${0.5 * length_z}" />
+        <xacro:property name="collision_z_offset" value="${chassis_top_absolute_height + 0.5 * length_z}" />
 
         <joint name="joint_body_to_sensor_lidar_${name}" type="fixed">
             <parent link="${parent_link}"/>
             <child link="link_sensor_lidar_${name}"/>
-            <xacro:insert_block name="origin"/>
+            <origin rpy="0 0 0" xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
         </joint>
 
         <link name="link_sensor_lidar_${name}">
             <visual>
-                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
+                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
                 <geometry>
                     <box size="${length_x} ${length_y} ${length_z}"/>
                 </geometry>
             </visual>
             <collision>
-                <origin xyz="${collision_x_offset} ${collision_y_offset} ${collision_z_offset}"/>
+                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
                 <geometry>
                     <box size="${length_x} ${length_y} ${length_z}"/>
                 </geometry>
