@@ -80,7 +80,7 @@
 
     <xacro:macro name="gazebo_sensor_rplidar" params="name" >
         <gazebo reference="link_sensor_lidar_${name}">
-            <sensor name="${name}" type="gpu_lidar">
+            <sensor name="${name}" type="lidar">
                 <alwaysOn>true</alwaysOn>
                 <topic>rplidar_front/scan</topic>
                 <lidarName>rplidar_front</lidarName>
