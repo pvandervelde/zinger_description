@@ -216,7 +216,7 @@
     </xacro:macro>
 
     <!-- Lidar sensor -->
-    <xacro:macro name="sensor_lidar" params="name parent_link chassis_top_absolute_height">
+    <xacro:macro name="sensor_lidar" params="name parent_link chassis_top_relative_height">
 
         <xacro:property name="mass"     value="0.17"/>
         <xacro:property name="length_x" value="0.071" />
@@ -225,7 +225,7 @@
 
         <xacro:property name="collision_x_offset" value="0" />
         <xacro:property name="collision_y_offset" value="0" />
-        <xacro:property name="collision_z_offset" value="${chassis_top_absolute_height + 0.5 * length_z}" />
+        <xacro:property name="collision_z_offset" value="${chassis_top_relative_height}" />
 
         <joint name="joint_body_to_sensor_lidar_${name}" type="fixed">
             <parent link="${parent_link}"/>
@@ -235,20 +235,20 @@
 
         <link name="link_sensor_lidar_${name}">
             <visual>
-                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+                <origin rpy="0 0 0" xyz="0.0 0 ${0.5 * length_z}"/>
                 <geometry>
                     <box size="${length_x} ${length_y} ${length_z}"/>
                 </geometry>
             </visual>
             <collision>
-                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+                <origin rpy="0 0 0" xyz="0.0 0 ${0.5 * length_z}"/>
                 <geometry>
                     <box size="${length_x} ${length_y} ${length_z}"/>
                 </geometry>
             </collision>
             <inertial>
                 <mass value="${mass}" />
-                <origin rpy="0 0 0" xyz="0.0 0 0.0"/>
+                <origin rpy="0 0 0" xyz="0.0 0 ${0.5 * length_z}"/>
                 <inertia
                     ixx="${(1/12) * mass * (length_y*length_y + length_z*length_z)}"
                     ixy="0.0"

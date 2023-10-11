@@ -237,7 +237,7 @@
     <xacro:sensor_lidar
         name="rplidar_front"
         parent_link="chassis_link"
-        chassis_top_absolute_height="${wheel_radius + chassis_height}" />
+        chassis_top_relative_height="${0.5 * chassis_height}" />
 
     <!-- Bump -->
 
