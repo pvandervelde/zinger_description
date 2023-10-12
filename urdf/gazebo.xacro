@@ -23,7 +23,7 @@
 
     <!-- Sensors -->
 
-    <xacro:macro name="gazebo_sensor_imu" params="name update_rate:=62" >
+    <xacro:macro name="gazebo_sensor_imu" params="name update_rate:=25" >
         <gazebo reference="link_sensor_imu_${name}">
             <sensor name="${name}" type="imu">
                 <always_on>true</always_on>
@@ -81,9 +81,13 @@
     <xacro:macro name="gazebo_sensor_rplidar" params="name" >
         <gazebo reference="link_sensor_lidar_${name}">
             <sensor name="${name}" type="gpu_lidar">
+                <!--
+                    Move the sensor up slightly from the bottom of the lidar unit.
+                -->
                 <pose>0 0 0.02 0 0 0</pose>
                 <alwaysOn>true</alwaysOn>
                 <topic>rplidar_front/scan</topic>
+                <update_rate>25</update_rate>
                 <lidarName>rplidar_front</lidarName>
                 <visualize>true</visualize>
                 <ray>
@@ -164,6 +168,7 @@
                 filename="libignition-gazebo-sensors-system.so"
                 name="ignition::gazebo::systems::Sensors">
             <render_engine>ogre2</render_engine>
+            <updateRate>25</updateRate>
         </plugin>
     </gazebo>
 </robot>
