@@ -70,6 +70,14 @@
                     </z>
                     </linear_acceleration>
                 </imu>
+                <plugin
+                        filename="libignition-gazebo-imu-system.so"
+                        name="ignition::gazebo::systems::Imu">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>25</updateRate>
+                    <topic>imu</topic>
+                    <imuName>imu_center</imuName>
+                </plugin>
             </sensor>
         </gazebo>
 
@@ -111,6 +119,13 @@
                         <resolution>0.01</resolution>
                     </range>
                 </ray>
+                <plugin
+                    filename="libignition-gazebo-sensors-system.so"
+                    name="ignition::gazebo::systems::Sensors">
+                    <render_engine>ogre2</render_engine>
+                    <updateRate>25</updateRate>
+                    <frameName>link_sensor_lidar_${name}</frameName>
+                </plugin>
             </sensor>
         </gazebo>
 
@@ -150,26 +165,6 @@
             <use_pose_vector_msg>true</use_pose_vector_msg>
             <static_publisher>true</static_publisher>
             <static_update_frequency>-1</static_update_frequency>
-        </plugin>
-    </gazebo>
-    <gazebo>
-        <plugin
-                filename="libignition-gazebo-imu-system.so"
-                name="ignition::gazebo::systems::Imu">
-            <alwaysOn>true</alwaysOn>
-            <updateRate>25</updateRate>
-            <topic>imu</topic>
-            <imuName>imu_center</imuName>
-        </plugin>
-    </gazebo>
-
-    <gazebo>
-        <plugin
-                filename="libignition-gazebo-sensors-system.so"
-                name="ignition::gazebo::systems::Sensors">
-            <render_engine>ogre2</render_engine>
-            <updateRate>25</updateRate>
-            <frameName>link_sensor_lidar_rplidar_front</frameName>
         </plugin>
     </gazebo>
 </robot>
