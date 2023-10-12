@@ -169,6 +169,7 @@
                 name="ignition::gazebo::systems::Sensors">
             <render_engine>ogre2</render_engine>
             <updateRate>25</updateRate>
+            <frameName>link_sensor_lidar_rplidar_front</frameName>
         </plugin>
     </gazebo>
 </robot>
