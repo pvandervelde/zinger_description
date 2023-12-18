@@ -120,7 +120,7 @@
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
             </geometry>
-            <material name="silver"/>
+            <material name="orange"/>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0.0"/>
@@ -225,4 +225,25 @@
         <xacro:steering_module_controller name="right_rear" />
         <xacro:steering_module_controller name="right_front" />
     </ros2_control>
+
+    <!-- Sensors -->
+
+    <!-- IMU -->
+    <xacro:sensor_imu name="imu_center" parent_link="chassis_link">
+        <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+    </xacro:sensor_imu>
+
+    <!-- LIDAR -->
+    <xacro:sensor_lidar
+        name="rplidar_front"
+        parent_link="chassis_link"
+        chassis_top_relative_height="${0.5 * chassis_height}" />
+
+    <!-- Bump -->
+
+    <!-- Sonar -->
+
+    <!-- IR -->
+
+    <!-- Cliff sensors -->
 </robot>

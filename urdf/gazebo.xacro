@@ -21,6 +21,119 @@
         </gazebo>
     </xacro:macro>
 
+    <!-- Sensors -->
+
+    <xacro:macro name="gazebo_sensor_imu" params="name update_rate:=25" >
+        <gazebo reference="link_sensor_imu_${name}">
+            <sensor name="${name}" type="imu">
+                <ignition_frame_id>link_sensor_imu_${name}</ignition_frame_id>
+                <always_on>true</always_on>
+                <update_rate>${update_rate}</update_rate>
+                <imu>
+                    <angular_velocity>
+                    <x>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </z>
+                    </angular_velocity>
+                    <linear_acceleration>
+                    <x>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                        <mean>0.0</mean>
+                        <stddev>0.0</stddev>
+                        </noise>
+                    </z>
+                    </linear_acceleration>
+                </imu>
+                <plugin
+                        filename="libignition-gazebo-imu-system.so"
+                        name="ignition::gazebo::systems::Imu">
+                    <alwaysOn>true</alwaysOn>
+                    <updateRate>25</updateRate>
+                    <topic>imu</topic>
+                    <imuName>imu_center</imuName>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="joint_body_to_sensor_imu_${name}">
+            <preserveFixedJoint>true</preserveFixedJoint>
+        </gazebo>
+    </xacro:macro>
+
+    <xacro:macro name="gazebo_sensor_rplidar" params="name" >
+        <gazebo reference="link_sensor_lidar_${name}">
+            <sensor name="${name}" type="gpu_lidar">
+                <!--
+                    Move the sensor up slightly from the bottom of the lidar unit.
+                -->
+                <pose>0 0 0.02 0 0 0</pose>
+                <alwaysOn>true</alwaysOn>
+                <topic>rplidar_front/scan</topic>
+                <update_rate>25</update_rate>
+                <lidarName>rplidar_front</lidarName>
+                <visualize>true</visualize>
+                <ignition_frame_id>link_sensor_lidar_${name}</ignition_frame_id>
+                <ray>
+                    <scan>
+                        <horizontal>
+                            <samples>640</samples>
+                            <resolution>1.0</resolution>
+                            <min_angle>${-pi}</min_angle>
+                            <max_angle>${pi}</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.164</min>
+                        <max>12.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                </ray>
+                <plugin
+                    filename="libignition-gazebo-sensors-system.so"
+                    name="ignition::gazebo::systems::Sensors">
+                    <render_engine>ogre2</render_engine>
+                </plugin>
+            </sensor>
+        </gazebo>
+
+        <gazebo reference="joint_body_to_sensor_lidar_${name}">
+            <preserveFixedJoint>true</preserveFixedJoint>
+        </gazebo>
+    </xacro:macro>
+
     <!--
         GAZEBO
     -->
@@ -28,6 +141,9 @@
     <xacro:gazebo_reference_link_wheel name="left_rear" />
     <xacro:gazebo_reference_link_wheel name="right_rear" />
     <xacro:gazebo_reference_link_wheel name="right_front" />
+
+    <xacro:gazebo_sensor_imu name="imu_center" />
+    <xacro:gazebo_sensor_rplidar name="rplidar_front" />
 
     <gazebo>
         <plugin
